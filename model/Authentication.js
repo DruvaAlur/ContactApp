@@ -16,6 +16,7 @@ class JWTPayload {
   }
   static isValidUser(req, resp) {
     const myToken = req.cookies["myToken"];
+    // console.log(myToken);
     if (!myToken) {
       resp.status(504).send("Login required");
       return false;
@@ -23,7 +24,7 @@ class JWTPayload {
 
     const newPayload = JWTPayload.verifyCookie(myToken);
     if (!newPayload.isActive) {
-      resp.status(504).send("Admin Login Required");
+      resp.status(504).send("user not active");
       return false;
     }
     return true;

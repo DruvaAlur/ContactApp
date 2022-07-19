@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const { User } = require("./model/User.js");
 const cookieParser = require("cookie-parser");
-const { Contact } = require("./model/Contact.js");
+
 const { JWTPayload } = require("./model/Authentication.js");
 app.use(cors());
 app.use(bodyParser.json());
