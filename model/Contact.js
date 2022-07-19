@@ -6,7 +6,7 @@ class Contact {
     this.fname = fname;
     this.lname = lname;
     this.isActive = true;
-    this.fullname = fname + lname;
+    this.fullname = fname + " " + lname;
     this.contactDetails = [];
   }
   findContactDetail(type) {
@@ -32,12 +32,39 @@ class Contact {
     return newContactDetail;
   }
   deleteContact() {
+    if (this.isActive == false) {
+      return "invalid Contact";
+    }
     this.isActive = false;
     return true;
   }
   isContactExists(fullName) {
     if (this.isContactActive == false) return false;
     if (`${this.firstName} ${this.lastName}` == fullName) return true;
+  }
+  update(propertTobeUpdated, value) {
+    if (this.isActive == false) {
+      return [false, this, "invalid contact"];
+    }
+    console.log(propertTobeUpdated);
+    switch (propertTobeUpdated) {
+      case "firstname": {
+        this.fname = value;
+        this.UpdateFullname();
+        return [true, this, "firstname updated successfully"];
+      }
+      case "lastname": {
+        this.lname = value;
+        this.UpdateFullname();
+        return [true, this, "lastname updated"];
+      }
+      default:
+        return [false, this, "contact not updated "];
+    }
+  }
+
+  UpdateFullname() {
+    this.fullName = this.fname + " " + this.lname;
   }
 }
 module.exports = { Contact };

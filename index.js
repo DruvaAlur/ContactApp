@@ -139,6 +139,29 @@ app.post("/api/v1/deleteUser", (req, resp) => {
     resp.status(200).send("user deleted");
   }
 });
+app.put("/api/v1/updateContact/:username/:contactName", (req, resp) => {
+  const isUser = JWTPayload.isValidUser(req, resp);
+  if (!isUser) {
+    return "unauthorized access";
+  }
+  const username = req.params.username;
+  const contactName = req.params.contactName;
+  const propertTobeUpdated = req.body.propertyTobeUpdated;
+  const value = req.body.value;
+
+  const [indexOfUser, isuseractive, isUserExist] = User.isUserExists(username);
+  if (!isUserExist) {
+    resp.status(504).send("invalid username");
+  }
+
+  const [isUpdated, UpdatedContact, message] = User.allUsers[
+    indexOfUser
+  ].updateContact(contactName, propertTobeUpdated, value);
+  if (!isUpdated) {
+    resp.status(504).send(message);
+  }
+  resp.status(200).send(UpdatedContact);
+});
 app.post("/api/v1/deleteContact/:username", (req, resp) => {
   const isValidUser = JWTPayload.isValidUser(req, resp);
   if (!isValidUser) {

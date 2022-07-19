@@ -115,6 +115,21 @@ class User {
     }
     return [null, false, false];
   }
+  updateContact(fullName, propertTobeUpdated, value) {
+    if (this.isActive == false) {
+      return [false, null, "Invalid User"];
+    }
+    console.log(fullName);
+    let arr = fullName.split(" ");
+    let fname = arr[0];
+    let lname = arr[1];
+    const [indexOfContact, isContactActive, isContactExist] =
+      this.isContactExists(fname, lname);
+    if (!isContactExist) {
+      return [false, null, "contact doesn't exist with that name"];
+    }
+    return this.contacts[indexOfContact].update(propertTobeUpdated, value);
+  }
 
   deleteUser(username) {
     console.log(username);
