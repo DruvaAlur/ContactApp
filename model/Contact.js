@@ -31,18 +31,13 @@ class Contact {
     this.contactDetails.push(newContactDetail);
     return newContactDetail;
   }
-  // //isContactexists(){
-  //   if(this.active==false){
-
-  //   }
-  //   return fullname
-  // }
-  // deleteContact(){
-  //   if(this.active==false){
-  //     return false
-  //   }
-  //   this.active=false
-  //   return true
-  // }
+  deleteContact() {
+    this.isActive = false;
+    return true;
+  }
+  isContactExists(fullName) {
+    if (this.isContactActive == false) return false;
+    if (`${this.firstName} ${this.lastName}` == fullName) return true;
+  }
 }
 module.exports = { Contact };

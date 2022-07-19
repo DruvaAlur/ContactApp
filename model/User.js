@@ -84,8 +84,10 @@ class User {
     if (!isContactActive) {
       return "contact is not active";
     }
-    this.contacts[indexofcontact].isActive = false;
-    return "contact deleted";
+    let isContactDeleted = this.contacts[indexofcontact].deleteContact();
+    if (isContactDeleted) {
+      return "contact deleted";
+    }
   }
   createContactDetail(fname, lname, type, value) {
     let [indexofcontact, isContactActive, isContactExists] =
