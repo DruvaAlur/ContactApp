@@ -177,7 +177,7 @@ app.post("/api/v1/deleteContact/:username", (req, resp) => {
   }
   resp.status(200).send(User.allUsers[indexofUser].deleteContact(fname, lname));
 });
-app.post("/api/v1/updateUser/:username", (req, resp) => {
+app.put("/api/v1/updateUser/:username", (req, resp) => {
   const isValidAdmin = JWTPayload.isValidAdmin(req, resp);
   if (!isValidAdmin) {
     return;

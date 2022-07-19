@@ -56,7 +56,7 @@ class Contact {
       case "lastname": {
         this.lname = value;
         this.UpdateFullname();
-        return [true, this, "lastname updated"];
+        return [true, this, "lastname updated successfully"];
       }
       default:
         return [false, this, "contact not updated "];
