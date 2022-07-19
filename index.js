@@ -190,7 +190,7 @@ app.put("/api/v1/updateUser/:username", (req, resp) => {
   if (!isUserExists || !isUserActive) {
     resp.status(200).send("user doesnt exists");
   }
-  let isUpdateSuccess = User.allUsers[indexofUser].update(
+  let isUpdateSuccess = User.allUsers[indexofUser].updateUser(
     propertyToUpdate,
     value
   );

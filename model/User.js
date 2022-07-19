@@ -161,24 +161,19 @@ class User {
 
     return [null, false, false];
   }
-  updateFirstname(newFirstname) {
-    this.fname = newFirstname;
-  }
-  updateLastName(newlastname) {
-    this.lname = newlastname;
-  }
+
   // updateUserName(fname, lname) {
   //   this.username = this.fname + this.lname;
   // }
-  update(propertyToUpdate, value) {
+  updateUser(propertyToUpdate, value) {
     switch (propertyToUpdate) {
       case "firstName":
-        this.updateFirstname(value);
+        this.fname = value;
         // this.updateUserName(value, this.lname);
         return true;
 
       case "lastName":
-        this.updateLastName(value);
+        this.lname = value;
         // this.updateUserName(this.fname, value);
         return true;
 
