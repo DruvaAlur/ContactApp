@@ -10,11 +10,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
 const [admin, message] = User.createAdmin();
+console.log(admin);
 app.post("/api/v1/login", (req, resp) => {
   const { username, password } = req.body;
 
   let [indexOfUser, isUserActive, isUserExists] = User.isUserExists(username);
-
+  console.log(User.allUsers);
   if (
     !isUserExists ||
     User.allUsers[indexOfUser].credential.password != password
@@ -27,13 +28,13 @@ app.post("/api/v1/login", (req, resp) => {
   resp.cookie("myToken", newToken);
   resp.status(200).send("Loggin Done");
 });
-app.post("/api/v1/createUser", (req, resp) => {
+app.post("/api/v1/createUser", async (req, resp) => {
   const isValidAdmin = JWTPayload.isValidAdmin(req, resp);
   if (!isValidAdmin) {
     return "not valid admin please login as admin";
   }
   const { fname, lname, username, password, role } = req.body;
-  let [newUser, message] = admin.createUser(
+  let [newUser, message] = await admin.createUser(
     fname,
     lname,
     username,
@@ -65,14 +66,13 @@ app.post("/api/v1/createContact/:username", (req, resp) => {
     resp.status(200).send(newcontact);
   }
 });
-app.post("/api/v1/createContactDetail/:username/:fname/:lname", (req, resp) => {
+app.post("/api/v1/createContactDetail/:username/:fullname", (req, resp) => {
   const isValidUser = JWTPayload.isValidUser(req, resp);
   if (!isValidUser) {
     return "please login";
   }
   const username = req.params.username;
-  const fname = req.params.fname;
-  const lname = req.params.lname;
+  const fullname = req.params.fullname;
   const { type, value } = req.body;
 
   let [indexofUser, isUserActive, isUserExists] = User.isUserExists(username);
@@ -80,15 +80,13 @@ app.post("/api/v1/createContactDetail/:username/:fname/:lname", (req, resp) => {
   if (!isUserExists || !isUserActive) {
     resp.status(200).send("user doesnt exists");
   }
-  [indexOfContact, isContactActive, isContactExists] = User.allUsers[
-    indexofUser
-  ].isContactExists(fname, lname);
+  [indexOfContact, isContactActive, isContactExists] =
+    User.allUsers[indexofUser].isContactExists(fullname);
   if (!isContactActive || !isContactExists) {
     resp.status(200).send("contact doesnt exists");
   }
   let newContactDetail = User.allUsers[indexofUser].createContactDetail(
-    fname,
-    lname,
+    fullname,
     type,
     value
   );
@@ -168,14 +166,14 @@ app.post("/api/v1/deleteContact/:username", (req, resp) => {
     return "please login";
   }
   const username = req.params.username;
-  const { fname, lname } = req.body;
+  const { fullname } = req.body;
 
   let [indexofUser, isUserActive, isUserExists] = User.isUserExists(username);
   // console.log(isUserActive);
   if (!isUserExists || !isUserActive) {
     resp.status(200).send("user doesnt exists");
   }
-  resp.status(200).send(User.allUsers[indexofUser].deleteContact(fname, lname));
+  resp.status(200).send(User.allUsers[indexofUser].deleteContact(fullname));
 });
 app.put("/api/v1/updateUser/:username", (req, resp) => {
   const isValidAdmin = JWTPayload.isValidAdmin(req, resp);

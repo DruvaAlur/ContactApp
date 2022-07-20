@@ -18,6 +18,7 @@ class User {
     const fname = "Druva";
     const lname = "Alur";
     const role = "admin";
+    // console.log(Credential.createCredential(userName, password));
     const [flag, message, newCredential] = Credential.createCredential(
       userName,
       password
@@ -28,9 +29,10 @@ class User {
     // console.log(newCredential.userName);
     const admin = new User(fname, lname, newCredential, role);
     User.allUsers.push(admin);
+    // console.log(User.allUsers);
     return [admin, "Admin created Successfully"];
   }
-  createUser(fname, lname, username, password, role) {
+  async createUser(fname, lname, username, password, role) {
     if (this.isActive == false) return [null, "Not able to create an User"];
     if (this.role != "admin")
       return [null, "Please Specify the role to Admin to create a User"];
@@ -39,6 +41,7 @@ class User {
       return [null, "username already exists"];
     }
     const newCredential = new Credential(username, password);
+    newCredential.password = await newCredential.getHashOfPassword();
     const newUser = new User(fname, lname, newCredential, role);
     User.allUsers.push(newUser);
     return [newUser, "New User created"];
@@ -52,7 +55,7 @@ class User {
       return "invalid user";
     }
     let [indexOfContact, isContactActive, isContactExists] =
-      this.isContactExists(fname, lname);
+      this.isContactExists(fname + " " + lname);
     if (isContactExists) {
       return "contact already exists please choose other name";
     }
@@ -75,9 +78,9 @@ class User {
       if (User.allUsers[i].isActive) tempusers.push(User.allUsers[i]);
     return tempusers;
   }
-  deleteContact(contactfname, contactlname) {
+  deleteContact(fullname) {
     let [indexofcontact, isContactActive, isContactExists] =
-      this.isContactExists(contactfname, contactlname);
+      this.isContactExists(fullname);
     if (!isContactExists) {
       return "contact does not exists";
     }
@@ -89,9 +92,9 @@ class User {
       return "contact deleted";
     }
   }
-  createContactDetail(fname, lname, type, value) {
+  createContactDetail(fullname, type, value) {
     let [indexofcontact, isContactActive, isContactExists] =
-      this.isContactExists(fname, lname);
+      this.isContactExists(fullname);
     if (!isContactExists) {
       console.log("Contact doesnt exists");
       return;
@@ -115,16 +118,16 @@ class User {
     }
     return [null, false, false];
   }
-  updateContact(fullName, propertTobeUpdated, value) {
+  updateContact(fullname, propertTobeUpdated, value) {
     if (this.isActive == false) {
       return [false, null, "Invalid User"];
     }
-    console.log(fullName);
-    let arr = fullName.split(" ");
-    let fname = arr[0];
-    let lname = arr[1];
+    // console.log(fullName);
+    // let arr = fullName.split(" ");
+    // let fname = arr[0];
+    // let lname = arr[1];
     const [indexOfContact, isContactActive, isContactExist] =
-      this.isContactExists(fname, lname);
+      this.isContactExists(fullname);
     if (!isContactExist) {
       return [false, null, "contact doesn't exist with that name"];
     }
@@ -149,12 +152,9 @@ class User {
     }
     return "only admin can delete users";
   }
-  isContactExists(fname, lname) {
+  isContactExists(fullname) {
     for (let i = 0; i < this.contacts.length; i++) {
-      if (
-        fname === this.contacts[i].fname &&
-        lname === this.contacts[i].lname
-      ) {
+      if (fullname === this.contacts[i].fullname) {
         return [i, this.contacts[i].isActive, true];
       }
     }

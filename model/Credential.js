@@ -1,4 +1,6 @@
 const uuid = require("uuid");
+const bcrypt = require("bcrypt");
+const { User } = require("./User");
 class Credential {
   static allCredentials = [];
   constructor(userName, password) {
@@ -6,10 +8,13 @@ class Credential {
     this.password = password;
     this.credentialId = uuid.v4();
   }
+  async getHashOfPassword() {
+    return bcrypt.hash(this.password, 10);
+  }
 
   static finduserName(userName) {
     for (let index = 0; index < Credential.allCredentials.length; index++) {
-      if (Credential.allCredentials[index].usernameuserName == userName) {
+      if (Credential.allCredentials[index].username == userName) {
         return [true, index];
       }
     }
@@ -21,6 +26,7 @@ class Credential {
     if (isuserNameExist) {
       return [false, "userName Already Exist", null];
     }
+
     let newCredential = new Credential(userName, password);
     Credential.allCredentials.push(newCredential);
     return [true, "Credential Created", newCredential];

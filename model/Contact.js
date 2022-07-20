@@ -38,10 +38,7 @@ class Contact {
     this.isActive = false;
     return true;
   }
-  isContactExists(fullName) {
-    if (this.isContactActive == false) return false;
-    if (`${this.firstName} ${this.lastName}` == fullName) return true;
-  }
+
   update(propertTobeUpdated, value) {
     if (this.isActive == false) {
       return [false, this, "invalid contact"];
