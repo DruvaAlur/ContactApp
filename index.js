@@ -79,14 +79,14 @@ app.post("/api/v1/createContact/:username", (req, resp) => {
     resp.status(200).send(newcontact);
   }
 });
-app.post("/api/v1/createContactDetail/:username/:fullname", (req, resp) => {
+app.post("/api/v1/createContactDetail/:username", (req, resp) => {
   const isValidUser = JWTPayload.isValidUser(req, resp);
   if (!isValidUser) {
     return "please login";
   }
   const username = req.params.username;
-  const fullname = req.params.fullname;
-  const { type, value } = req.body;
+
+  const { type, value, fullname } = req.body;
 
   let [indexofUser, isUserActive, isUserExists] = User.isUserExists(username);
 
@@ -150,15 +150,16 @@ app.post("/api/v1/deleteUser", (req, resp) => {
     resp.status(200).send("user deleted");
   }
 });
-app.put("/api/v1/updateContact/:username/:contactName", (req, resp) => {
+app.put("/api/v1/updateContact/:username", (req, resp) => {
   const isUser = JWTPayload.isValidUser(req, resp);
   if (!isUser) {
     return "unauthorized access";
   }
   const username = req.params.username;
-  const contactName = req.params.contactName;
+
   const propertTobeUpdated = req.body.propertyTobeUpdated;
   const value = req.body.value;
+  const contactName = req.body.value;
 
   const [indexOfUser, isuseractive, isUserExist] = User.isUserExists(username);
   if (!isUserExist) {
