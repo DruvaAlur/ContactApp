@@ -12,7 +12,7 @@ class User {
     this.credential = credential;
     this.contacts = [];
   }
-  static createAdmin() {
+  static async createAdmin() {
     const userName = "druva123";
     const password = "druva@123";
     const fname = "Druva";
@@ -26,6 +26,7 @@ class User {
     if (!flag) {
       return message;
     }
+    newCredential.password = await newCredential.getHashOfPassword();
     // console.log(newCredential.userName);
     const admin = new User(fname, lname, newCredential, role);
     User.allUsers.push(admin);
@@ -112,7 +113,10 @@ class User {
   }
   static isUserExists(username) {
     for (let i = 0; i < User.allUsers.length; i++) {
-      if (username === User.allUsers[i].credential.username) {
+      if (
+        username === User.allUsers[i].credential.username &&
+        User.allUsers[i].isActive
+      ) {
         return [i, User.allUsers[i].isActive, true];
       }
     }

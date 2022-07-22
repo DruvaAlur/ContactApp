@@ -31,5 +31,8 @@ class Credential {
     Credential.allCredentials.push(newCredential);
     return [true, "Credential Created", newCredential];
   }
+  static async comparePassword(password, encyptedPassword) {
+    return await bcrypt.compare(password, encyptedPassword);
+  }
 }
 module.exports = { Credential };

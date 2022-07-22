@@ -4,21 +4,34 @@ const bodyParser = require("body-parser");
 const app = express();
 const { User } = require("./model/User.js");
 const cookieParser = require("cookie-parser");
-
+const { Credential } = require("./model/Credential");
 const { JWTPayload } = require("./model/Authentication.js");
 app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
-const [admin, message] = User.createAdmin();
-console.log(admin);
-app.post("/api/v1/login", (req, resp) => {
+
+async function createAdmin() {
+  [admin, message] = await User.createAdmin();
+}
+
+app.post("/api/v1/login", async (req, resp) => {
   const { username, password } = req.body;
 
   let [indexOfUser, isUserActive, isUserExists] = User.isUserExists(username);
   console.log(User.allUsers);
+  console.log(password, User.allUsers[indexOfUser].credential.password);
+  console.log(
+    await Credential.comparePassword(
+      password,
+      User.allUsers[indexOfUser].credential.password
+    )
+  );
   if (
     !isUserExists ||
-    User.allUsers[indexOfUser].credential.password != password
+    !(await Credential.comparePassword(
+      password,
+      User.allUsers[indexOfUser].credential.password
+    ))
   ) {
     resp.status(504).send("Invalid Credentials");
     return;
@@ -203,6 +216,7 @@ app.post("/api/v1/logout", (req, resp) => {
   });
   resp.status(200).send("User Logged out Successfully");
 });
-app.listen(8800, () => {
+app.listen(8800, async () => {
+  await createAdmin();
   console.log("app started at port 8800");
 });
