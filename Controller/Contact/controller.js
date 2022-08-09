@@ -1,6 +1,6 @@
-const { User } = require("../View/User.js");
+const { User } = require("../../View/User.js");
 
-const { JWTPayload } = require("../View/Authentication.js");
+const { JWTPayload } = require("../../View/Authentication.js");
 function createContact(req, resp) {
   // console.log(User.allUsers);
   const isValidUser = JWTPayload.isValidUser(req, resp);

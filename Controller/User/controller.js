@@ -1,6 +1,6 @@
-const { JWTPayload } = require("../View/Authentication.js");
+const { JWTPayload } = require("../../View/Authentication.js");
 let [admin, message] = [null, "not Admin"];
-const { User } = require("../View/User");
+const { User } = require("../../View/User");
 async function createAdmin() {
   [admin, message] = await User.createAdmin();
 }

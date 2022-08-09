@@ -1,7 +1,7 @@
-const { User } = require("../View/User.js");
+const { User } = require("../../View/User.js");
 
-const { Credential } = require("../View/Credential");
-const { JWTPayload } = require("../View/Authentication.js");
+const { Credential } = require("../../View/Credential");
+const { JWTPayload } = require("../../View/Authentication.js");
 async function login(req, resp) {
   const { username, password } = req.body;
   // console.log(username);

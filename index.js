@@ -10,7 +10,7 @@ const {
   getContacts,
   updateContact,
   deleteContact,
-} = require("./Contact/controller.js");
+} = require("./Controller/Contact/controller.js");
 const {
   createUser,
   updateUser,
@@ -20,10 +20,12 @@ const {
   isValidAdmin,
   toogleActiveFlag,
   getAllUsersCount,
-} = require("./User/controller.js");
-const { createContactDetail } = require("./ContactDetail/controller.js");
-const { login } = require("./Login/controller.js");
-const { logout } = require("./Logout/controller.js");
+} = require("./Controller/User/controller");
+const {
+  createContactDetail,
+} = require("./Controller/ContactDetail/controller.js");
+const { login } = require("./Controller/Login/controller");
+const { logout } = require("./Controller/Logout/controller");
 app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
