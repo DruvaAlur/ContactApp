@@ -1,6 +1,6 @@
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
-const { User } = require("./User");
+
 class Credential {
   static allCredentials = [];
   constructor(userName, password) {

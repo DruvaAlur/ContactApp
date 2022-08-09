@@ -43,7 +43,7 @@ class Contact {
     if (this.isActive == false) {
       return [false, this, "invalid contact"];
     }
-    console.log(propertTobeUpdated);
+    // console.log(propertTobeUpdated);
     switch (propertTobeUpdated) {
       case "firstname": {
         this.fname = value;
@@ -61,7 +61,7 @@ class Contact {
   }
 
   UpdateFullname() {
-    this.fullName = this.fname + " " + this.lname;
+    this.fullname = this.fname + " " + this.lname;
   }
 }
 module.exports = { Contact };
