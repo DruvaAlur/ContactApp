@@ -10,6 +10,8 @@ const {
   getContacts,
   updateContact,
   deleteContact,
+  toggleContact,
+  getAllContactsCount,
 } = require("./Controller/Contact/controller.js");
 const {
   createUser,
@@ -42,7 +44,7 @@ app.post("/api/v1/createContact/:username", (req, resp) => {
 app.post("/api/v1/createContactDetail/:username", (req, resp) => {
   createContactDetail(req, resp);
 });
-app.get("/api/v1/getContacts/:username", (req, resp) => {
+app.post("/api/v1/getContacts/:username", (req, resp) => {
   getContacts(req, resp);
 });
 app.post("/api/v1/getUsers", (req, resp) => {
@@ -78,6 +80,15 @@ app.post("/api/v1/isAdminLoggedIn/:username", (req, resp) => {
 app.post("/api/v1/isUserLoggedIn/:username", (req, resp) => {
   JWTPayload.isUserLoggedIn(req, resp);
 });
+
+app.post("/api/v1/toggleContact/:username", (req, resp) => {
+  toggleContact(req, resp);
+});
+
+app.get("/api/v1/getAllContactsCount/:username", (req, resp) => {
+  getAllContactsCount(req, resp);
+});
+
 app.listen(8800, async () => {
   await createAdmin();
   // console.log(User.allUsers);

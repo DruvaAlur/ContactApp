@@ -10,24 +10,30 @@ function createContactDetail(req, resp) {
 
   const { type, value, fullname } = req.body;
   if (username == null || fullname == null || value == null || type == null) {
-    resp.status(400).send("please send all required parameters");
+    return resp.status(400).send("please send all required parameters");
   }
   let [indexofUser, isUserActive, isUserExists] = User.isUserExists(username);
 
   if (!isUserExists || !isUserActive) {
-    resp.status(400).send("user doesnt exists");
+    return resp.status(400).send("user doesnt exists");
   }
   [indexOfContact, isContactActive, isContactExists] =
     User.allUsers[indexofUser].isContactExists(fullname);
   if (!isContactActive || !isContactExists) {
-    resp.status(400).send("contact doesnt exists");
+    return resp.status(400).send("contact doesnt exists");
   }
   let newContactDetail = User.allUsers[indexofUser].createContactDetail(
     fullname,
     type,
     value
   );
-
+  console.log(username + "_______");
+  console.log(fullname);
+  console.log(type);
+  console.log(value);
+  if (newContactDetail == false) {
+    return resp.status(401).send("Contact Detail Type Already Exists");
+  }
   resp.status(201).send(newContactDetail);
 }
 module.exports = { createContactDetail };

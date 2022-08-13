@@ -112,6 +112,9 @@ class User {
       type,
       value
     );
+    if (newContactDetail == false) {
+      return false;
+    }
 
     return newContactDetail;
   }

@@ -70,7 +70,7 @@ class JWTPayload {
       resp.status(401).send("Admin Login Required");
       return false;
     }
-    console.log(req.params.username + "++++");
+
     if (newPayload.username != req.params.username) {
       resp.status(401).send("unauthorized access");
       return false;

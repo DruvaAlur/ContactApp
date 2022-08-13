@@ -18,13 +18,13 @@ class Contact {
     return [false, -1];
   }
   createContactDetail(type, value) {
-    if (this.isActive === false) {
-      return "invalid contact";
-    }
+    // if (this.isActive === false) {
+    //   return "invalid contact";
+    // }
     let [isContactDetailExists, indexOfContactDetail] =
       this.findContactDetail(type);
     if (isContactDetailExists) {
-      return "type already exists";
+      return false;
     }
     let newContactDetail = new ContactDetail(type, value);
     // console.log(newContactDetail);

@@ -128,7 +128,7 @@ function toogleActiveFlag(req, resp) {
     ? (User.allUsers[userIndex].isActive = false)
     : (User.allUsers[userIndex].isActive = true);
   // console.log(User.allUsers);
-  return;
+  resp.status(201).send("update done");
 }
 function getAllUsersCount(req, resp) {
   // console.log(User.allUsers.length + "+++");

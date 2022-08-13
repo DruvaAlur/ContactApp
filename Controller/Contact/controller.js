@@ -29,12 +29,49 @@ function createContact(req, resp) {
   }
   resp.status(201).send(newcontact);
 }
+function toggleContact(req, resp) {
+  const fullname = req.body.fullname;
+  const username = req.params.username;
+  let [indexofUser, isUserActive, isUserExists] = User.isUserExists(username);
+
+  if (!isUserExists || !isUserActive) {
+    resp.status(400).send("user doesnt exists");
+  }
+  let [indexOfContact, isContactActive, isContactExist] =
+    User.allUsers[indexofUser].isContactExists(fullname);
+  if (!isContactExist) {
+    resp.status(400).send("Contact doesnt exists");
+  }
+  User.allUsers[indexofUser].contacts[indexOfContact].isActive
+    ? (User.allUsers[indexofUser].contacts[indexOfContact].isActive = false)
+    : (User.allUsers[indexofUser].contacts[indexOfContact].isActive = true);
+  // console.log(User.allUsers);
+  resp.status(201).send("Contact toggled");
+  return;
+}
+function getAllContactsCount(req, resp) {
+  const username = req.params.username;
+  let [indexofUser, isUserActive, isUserExists] = User.isUserExists(username);
+
+  if (!isUserExists || !isUserActive) {
+    return resp.status(400).send("user doesnt exists");
+  }
+  resp.status(201).send(User.allUsers[indexofUser].contacts.length.toString());
+}
 function getContacts(req, resp) {
   const isValidUser = JWTPayload.isValidUser(req, resp);
   if (!isValidUser) {
     return "please login";
   }
   const username = req.params.username;
+  const { limit, pageNumber } = req.body;
+  let startIndex = (pageNumber - 1) * limit;
+  let endIndex = pageNumber * limit;
+  console.log(startIndex + "++++++");
+  console.log(endIndex);
+  console.log(pageNumber);
+  console.log(limit);
+  console.log(username);
   if (username == null) {
     resp.status(400).send("please send all required parameters");
   }
@@ -44,7 +81,9 @@ function getContacts(req, resp) {
     resp.status(400).send("user doesnt exists");
   }
 
-  resp.status(201).send(User.allUsers[indexofUser].displayContact());
+  resp
+    .status(201)
+    .send(User.allUsers[indexofUser].contacts.slice(startIndex, endIndex));
 }
 function updateContact(req, resp) {
   const isUser = JWTPayload.isValidUser(req, resp);
@@ -98,4 +137,11 @@ function deleteContact(req, resp) {
   }
   resp.status(201).send(User.allUsers[indexofUser].deleteContact(fullname));
 }
-module.exports = { createContact, getContacts, updateContact, deleteContact };
+module.exports = {
+  createContact,
+  getContacts,
+  updateContact,
+  deleteContact,
+  toggleContact,
+  getAllContactsCount,
+};
