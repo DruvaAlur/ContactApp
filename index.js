@@ -12,6 +12,7 @@ const {
   deleteContact,
   toggleContact,
   getAllContactsCount,
+  getContact,
 } = require("./Controller/Contact/controller.js");
 const {
   createUser,
@@ -25,6 +26,7 @@ const {
 } = require("./Controller/User/controller");
 const {
   createContactDetail,
+  updateContactDetail,
 } = require("./Controller/ContactDetail/controller.js");
 const { login } = require("./Controller/Login/controller");
 const { logout } = require("./Controller/Logout/controller");
@@ -47,6 +49,9 @@ app.post("/api/v1/createContactDetail/:username", (req, resp) => {
 app.post("/api/v1/getContacts/:username", (req, resp) => {
   getContacts(req, resp);
 });
+app.post("/api/v1/getContact/:username", (req, resp) => {
+  getContact(req, resp);
+});
 app.post("/api/v1/getUsers", (req, resp) => {
   getUsers(req, resp);
 });
@@ -61,6 +66,9 @@ app.put("/api/v1/updateContact/:username", (req, resp) => {
 });
 app.post("/api/v1/deleteContact/:username", (req, resp) => {
   deleteContact(req, resp);
+});
+app.post("/api/v1/updateContactDetail/:username", (req, resp) => {
+  updateContactDetail(req, resp);
 });
 app.put("/api/v1/updateUser", (req, resp) => {
   // console.log("here++++++++++++++++");

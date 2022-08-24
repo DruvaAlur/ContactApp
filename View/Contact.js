@@ -17,6 +17,28 @@ class Contact {
     }
     return [false, -1];
   }
+  updateContactDetail(type, propertTobeUpdated, propvalue) {
+    if (this.isActive == false) {
+      return [false, this, "invalid contact"];
+    }
+    let [isContactDetailExists, indexOfContactDetail] =
+      this.findContactDetail(type);
+    console.log(indexOfContactDetail);
+    switch (propertTobeUpdated) {
+      case "type": {
+        this.contactDetails[indexOfContactDetail].type = propvalue;
+
+        return true;
+      }
+      case "value": {
+        this.contactDetails[indexOfContactDetail].value = propvalue;
+
+        return true;
+      }
+      default:
+        return false;
+    }
+  }
   createContactDetail(type, value) {
     // if (this.isActive === false) {
     //   return "invalid contact";

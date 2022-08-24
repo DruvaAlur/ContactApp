@@ -36,7 +36,7 @@ class JWTPayload {
   }
   static isUserLoggedIn(req, resp) {
     const myToken = req.cookies["myToken"];
-
+    console.log(req.params.username + "InUserLoggedIn");
     if (!myToken) {
       resp.status(401).send("Login required");
       return false;

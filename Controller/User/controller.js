@@ -53,8 +53,13 @@ function getUsers(req, resp) {
   }
   let startIndex = (pageNumber - 1) * limit;
   let endIndex = pageNumber * limit;
-
-  resp.status(200).send(User.allUsers.slice(startIndex, endIndex));
+  let allusers = [];
+  for (let i = 0; i < User.allUsers.length; i++) {
+    if (User.allUsers[i].role != "admin") {
+      allusers.push(User.allUsers[i]);
+    }
+  }
+  resp.status(200).send(allusers.slice(startIndex, endIndex));
 }
 
 function deleteUser(req, resp) {
@@ -98,8 +103,12 @@ function updateUser(req, resp) {
   ) {
     return resp.status(400).send("please fill all fields in the form");
   }
-  let [indexofUser, isUserActive, isUserExists] = User.isUserExists(username);
 
+  let [indexofUser, isUserActive, isUserExists] = User.isUserExists(value);
+  if (isUserExists) {
+    return resp.status(400).send("username already exists");
+  }
+  [indexofUser, isUserActive, isUserExists] = User.isUserExists(username);
   if (!isUserExists || !isUserActive) {
     return resp.status(400).send("user doesnt exists");
   }

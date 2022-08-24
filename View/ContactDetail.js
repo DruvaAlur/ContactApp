@@ -4,6 +4,7 @@ class ContactDetail {
     this.contactDetailId = uuid.v4();
     this.type = type;
     this.value = value;
+    this.isActive = true;
   }
 }
 module.exports = { ContactDetail };

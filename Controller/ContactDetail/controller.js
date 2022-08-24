@@ -36,4 +36,36 @@ function createContactDetail(req, resp) {
   }
   resp.status(201).send(newContactDetail);
 }
-module.exports = { createContactDetail };
+function updateContactDetail(req, resp) {
+  const isValidUser = JWTPayload.isValidUser(req, resp);
+  if (!isValidUser) {
+    return "please login";
+  }
+  const username = req.params.username;
+
+  const { fullname, propertTobeUpdated, propvalue, type } = req.body;
+  if (
+    username == null ||
+    fullname == null ||
+    propvalue == null ||
+    propertTobeUpdated == null
+  ) {
+    return resp.status(400).send("please send all required parameters");
+  }
+  let [indexofUser, isUserActive, isUserExists] = User.isUserExists(username);
+
+  if (!isUserExists || !isUserActive) {
+    return resp.status(400).send("user doesnt exists");
+  }
+  let [indexOfContact, isContactActive, isContactExists] =
+    User.allUsers[indexofUser].isContactExists(fullname);
+  if (!isContactActive || !isContactExists) {
+    return resp.status(400).send("contact doesnt exists");
+  }
+  let isUpdated = User.allUsers[indexofUser].contacts[
+    indexOfContact
+  ].updateContactDetail(type, propertTobeUpdated, propvalue);
+  if (!isUpdated) return resp.status(400).send("update not successfull");
+  resp.status(201).send("update done");
+}
+module.exports = { createContactDetail, updateContactDetail };
